@@ -11,7 +11,20 @@ const RegisterScreen = () => {
         <Text style={styles.subtitleText}>
           Input your data to register a new user
         </Text>
-        <InputField title="email input" />
+        <InputField
+          firstIconName="mail-outline"
+          title="Email"
+          placeholder="Enter your email address"
+          keyboardType="email-address"
+        />
+        <InputField
+          firstIconName="lock-outline"
+          secondIconName="eye-off-outline"
+          secondIconNameAlt="eye-outline"
+          title="Password"
+          placeholder="Enter your password"
+          password
+        />
       </View>
     </SafeAreaView>
   );

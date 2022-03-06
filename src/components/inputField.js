@@ -9,6 +9,7 @@ const InputField = ({
   secondIconName,
   secondIconNameAlt,
   errorMessage,
+  setError,
   password,
   keyboardType,
   onFocus = () => {},
@@ -17,9 +18,6 @@ const InputField = ({
   const [isFocused, setIsFocused] = useState(false);
   const [secure, setIsSecure] = useState(password);
 
-  const changeSecure = () => {
-    secure ? setIsSecure(false) : setIsSecure(true);
-  };
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.title}>{title}</Text>
@@ -49,6 +47,7 @@ const InputField = ({
             secureTextEntry={secure ? true : false}
             onFocus={() => {
               setIsFocused(true);
+              onFocus();
             }}
             onBlur={() => {
               setIsFocused(false);
@@ -56,14 +55,17 @@ const InputField = ({
             {...props}
           />
         </View>
-        <Icon
-          size={20}
-          type="ionicon"
-          onPress={() => changeSecure()}
-          color={COLORS.darkblue}
-          style={styles.secondIcon}
-          name={secure ? secondIconName : secondIconNameAlt}
-        />
+        {password && (
+          <Icon
+            size={20}
+            type="ionicon"
+            // onPress the state of secure is changed to opposite
+            onPress={() => setIsSecure(!secure)}
+            color={COLORS.darkblue}
+            style={styles.secondIcon}
+            name={secure ? secondIconName : secondIconNameAlt}
+          />
+        )}
       </View>
       {errorMessage && (
         <View>
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     // borderColor: COLORS.grey,
     flexDirection: "row",
-    borderRadius: 5,
+    borderRadius: 10,
     width: "100%",
   },
   title: {
@@ -101,6 +103,7 @@ const styles = StyleSheet.create({
   },
   textInputContainer: {
     width: "85%",
+    justifyContent: "center",
   },
   secondIconContainer: {
     alignSelf: "flex-end",

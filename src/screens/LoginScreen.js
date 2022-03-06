@@ -1,22 +1,130 @@
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Keyboard,
+  TouchableWithoutFeedback,
+  Alert,
+} from "react-native";
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import COLORS from "../consts/colors";
+import InputField from "../components/inputField";
+import Button from "../components/Button";
+import { UserContext } from "../context/userContext";
 
 const LoginScreen = () => {
+  const navigation = useNavigation();
+  // state object tracking all four attributes of the user
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({
+    email: null,
+    password: null,
+  });
+  const [valid, setValid] = useState({
+    email: false,
+    password: false,
+  });
+  const { loginUser } = useContext(UserContext);
+  // universal function passed down to InputField components to update the state object
+  const handleInputChange = (text, input) => {
+    setInputs((prevState) => ({ ...prevState, [input]: text }));
+  };
+  // function to update the state of errors object with specific message for specific field
+  const handleErrorAdding = (errorText, input) => {
+    setErrors((prevState) => ({ ...prevState, [input]: errorText }));
+  };
+  // function to upadate the state of validation for every field
+  const handleValidChange = (bool, input) => {
+    setValid((prevState) => ({ ...prevState, [input]: bool }));
+  };
+  const validateEmail = () => {
+    if (!inputs.email) {
+      handleErrorAdding("You have to provide an email", "email");
+    } else if (!inputs.email.match(/\S+@\S+\.\S+/)) {
+      handleErrorAdding("Not a valid email address", "email");
+    } else {
+      handleValidChange(true, "email");
+    }
+  };
+
+  const validatePassword = () => {
+    if (!inputs.password) {
+      handleErrorAdding("You have to provide a password", "password");
+    } else {
+      handleValidChange(true, "password");
+    }
+  };
+  const attemptLogin = () => {
+    if ((valid.email === true) & (valid.password === true)) {
+      loginUser(inputs.email, inputs.password);
+    } else {
+      console.log("login email and login password are not valid attempts");
+    }
+  };
+
+  // When a login is succesfull and the user in the context folder changes, the screen is changed to Settings Screen
+  // useEffect(() => {
+  //   if (user !== null) {
+  //     navigation.navigate("SettingsScreen");
+  //   } else {
+  //     return;
+  //   }
+  // }, [user]);
   return (
-    <SafeAreaView style={styles.mainContainer}>
-      <Text>loginScreen</Text>
-      <Text>loginScreen</Text>
-      <Text>loginScreen</Text>
-      <Text>loginScreen</Text>
-      <Text>loginScreen</Text>
-      <Text>loginScreen</Text>
-      <Text>loginScreen</Text>
-      <Text>loginScreen</Text>
-      <Text>loginScreen</Text>
-      <Text>loginScreen</Text>
-      <Text>loginScreen</Text>
-      <Text>loginScreen</Text>
-    </SafeAreaView>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <SafeAreaView style={styles.mainContainer}>
+        <View style={styles.contentContainer}>
+          <Text style={styles.headerText}>Login</Text>
+          <Text style={styles.subtitleText}>Input data to login</Text>
+          <InputField
+            firstIconName="mail-outline"
+            title="Email"
+            placeholder="Enter your email address"
+            keyboardType="email-address"
+            onFocus={() => {
+              handleErrorAdding(null, "email");
+            }}
+            onChangeText={(text) => handleInputChange(text, "email")}
+            errorMessage={errors.email}
+          />
+          <InputField
+            firstIconName="lock-outline"
+            secondIconName="eye-off-outline"
+            secondIconNameAlt="eye-outline"
+            title="Password"
+            placeholder="Enter your password"
+            onFocus={() => {
+              handleErrorAdding(null, "password");
+            }}
+            onChangeText={(text) => handleInputChange(text, "password")}
+            errorMessage={errors.password}
+            password
+          />
+          <Button
+            text="Login"
+            onPress={() => {
+              Keyboard.dismiss();
+              validateEmail();
+              validatePassword();
+              attemptLogin();
+            }}
+          />
+          <Text
+            style={styles.loginText}
+            onPress={() => {
+              navigation.navigate("RegisterScreen");
+            }}
+          >
+            Dont't have an account? Register
+          </Text>
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -24,7 +132,28 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    alignItems: "center",
-    justifyContent: "center",
+    flex: 1,
+    backgroundColor: COLORS.white,
+  },
+  contentContainer: {
+    paddingTop: 50,
+    paddingHorizontal: 25,
+  },
+  headerText: {
+    fontWeight: "700",
+    fontSize: 25,
+    color: COLORS.black,
+  },
+  subtitleText: {
+    fontWeight: "500",
+    fontSize: 14,
+    color: COLORS.grey,
+    paddingTop: 10,
+  },
+  loginText: {
+    textAlign: "center",
+    fontSize: 16,
+    color: COLORS.black,
+    fontWeight: "600",
   },
 });

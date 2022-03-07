@@ -1,4 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import COLORS from "../consts/colors";
 
@@ -9,7 +10,12 @@ const Button = ({ text, onPress = () => {} }) => {
       style={styles.buttonStyle}
       onPress={onPress}
     >
-      <Text style={styles.textStyle}>{text}</Text>
+      <LinearGradient
+        style={styles.gradientFilling}
+        colors={[COLORS.gradient1, COLORS.gradient2, COLORS.gradient3]}
+      >
+        <Text style={styles.textStyle}>{text}</Text>
+      </LinearGradient>
     </TouchableOpacity>
   );
 };
@@ -18,18 +24,22 @@ export default Button;
 
 const styles = StyleSheet.create({
   buttonStyle: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    backgroundColor: COLORS.blue,
-    borderRadius: 10,
+    width: "80%",
+    backgroundColor: "transparent",
     height: 55,
     alignSelf: "center",
     marginVertical: 15,
   },
+  gradientFilling: {
+    height: "100%",
+    width: "100%",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   textStyle: {
     color: COLORS.white,
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "700",
   },
 });

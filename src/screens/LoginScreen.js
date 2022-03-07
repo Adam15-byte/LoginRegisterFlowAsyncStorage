@@ -2,16 +2,15 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   Keyboard,
   TouchableWithoutFeedback,
-  Alert,
 } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import COLORS from "../consts/colors";
 import InputField from "../components/inputField";
 import Button from "../components/Button";
+import Background from "../components/Background";
 import { UserContext } from "../context/userContext";
 
 const LoginScreen = () => {
@@ -67,63 +66,59 @@ const LoginScreen = () => {
     }
   };
 
-  // When a login is succesfull and the user in the context folder changes, the screen is changed to Settings Screen
-  // useEffect(() => {
-  //   if (user !== null) {
-  //     navigation.navigate("SettingsScreen");
-  //   } else {
-  //     return;
-  //   }
-  // }, [user]);
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <SafeAreaView style={styles.mainContainer}>
-        <View style={styles.contentContainer}>
-          <Text style={styles.headerText}>Login</Text>
-          <Text style={styles.subtitleText}>Input data to login</Text>
-          <InputField
-            firstIconName="mail-outline"
-            title="Email"
-            placeholder="Enter your email address"
-            keyboardType="email-address"
-            onFocus={() => {
-              handleErrorAdding(null, "email");
-            }}
-            onChangeText={(text) => handleInputChange(text, "email")}
-            errorMessage={errors.email}
-          />
-          <InputField
-            firstIconName="lock-outline"
-            secondIconName="eye-off-outline"
-            secondIconNameAlt="eye-outline"
-            title="Password"
-            placeholder="Enter your password"
-            onFocus={() => {
-              handleErrorAdding(null, "password");
-            }}
-            onChangeText={(text) => handleInputChange(text, "password")}
-            errorMessage={errors.password}
-            password
-          />
-          <Button
-            text="Login"
-            onPress={() => {
-              Keyboard.dismiss();
-              validateEmail();
-              validatePassword();
-              attemptLogin();
-            }}
-          />
-          <Text
-            style={styles.loginText}
-            onPress={() => {
-              navigation.navigate("RegisterScreen");
-            }}
-          >
-            Dont't have an account? Register
-          </Text>
-        </View>
-      </SafeAreaView>
+      <View style={styles.mainContainer}>
+        <Background>
+          <View style={styles.contentContainer}>
+            <Text style={styles.headerText}>Login</Text>
+            <Text style={styles.subtitleText}>Input data to login</Text>
+            <InputField
+              firstIconName="mail-outline"
+              title="Email"
+              placeholder="Enter your email address"
+              keyboardType="email-address"
+              onFocus={() => {
+                handleErrorAdding(null, "email");
+              }}
+              onChangeText={(text) => handleInputChange(text, "email")}
+              errorMessage={errors.email}
+            />
+            <InputField
+              firstIconName="lock-outline"
+              secondIconName="eye-off-outline"
+              secondIconNameAlt="eye-outline"
+              title="Password"
+              placeholder="Enter your password"
+              onFocus={() => {
+                handleErrorAdding(null, "password");
+              }}
+              onChangeText={(text) => handleInputChange(text, "password")}
+              errorMessage={errors.password}
+              password
+            />
+            <View style={styles.buttonTextContainer}>
+              <Button
+                text="Login"
+                onPress={() => {
+                  Keyboard.dismiss();
+                  validateEmail();
+                  validatePassword();
+                  attemptLogin();
+                }}
+              />
+              <Text
+                style={styles.loginText}
+                onPress={() => {
+                  navigation.navigate("RegisterScreen");
+                }}
+              >
+                Dont't have an account? Register
+              </Text>
+            </View>
+          </View>
+        </Background>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -133,27 +128,33 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: COLORS.white,
   },
   contentContainer: {
-    paddingTop: 50,
+    paddingTop: 100,
     paddingHorizontal: 25,
+    width: "100%",
   },
   headerText: {
     fontWeight: "700",
-    fontSize: 25,
-    color: COLORS.black,
+    fontSize: 30,
+    color: COLORS.white,
   },
   subtitleText: {
     fontWeight: "500",
-    fontSize: 14,
+    fontSize: 16,
     color: COLORS.grey,
     paddingTop: 10,
+    paddingBottom: 10,
   },
   loginText: {
     textAlign: "center",
-    fontSize: 16,
-    color: COLORS.black,
+    fontSize: 18,
+    color: COLORS.white,
     fontWeight: "600",
+    marginBottom: 15,
+  },
+  buttonTextContainer: {
+    backgroundColor: "'rgba(255, 255, 255, 0.3)'",
+    borderRadius: 10,
   },
 });

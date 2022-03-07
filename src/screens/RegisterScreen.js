@@ -2,10 +2,8 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   Keyboard,
   TouchableWithoutFeedback,
-  Alert,
 } from "react-native";
 import React, { useState, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -13,6 +11,7 @@ import COLORS from "../consts/colors";
 import InputField from "../components/inputField";
 import Button from "../components/Button";
 import { UserContext } from "../context/userContext";
+import Background from "../components/Background";
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -95,78 +94,82 @@ const RegisterScreen = () => {
   };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <SafeAreaView style={styles.mainContainer}>
-        <View style={styles.contentContainer}>
-          <Text style={styles.headerText}>Register</Text>
-          <Text style={styles.subtitleText}>
-            Input your data to register a new user
-          </Text>
-          <InputField
-            firstIconName="mail-outline"
-            title="Email"
-            placeholder="Enter your email address"
-            keyboardType="email-address"
-            onFocus={() => {
-              handleErrorAdding(null, "email");
-            }}
-            onChangeText={(text) => handleInputChange(text, "email")}
-            errorMessage={errors.email}
-          />
-          <InputField
-            firstIconName="person-outline"
-            title="Fullname"
-            placeholder="Enter you fullname"
-            onFocus={() => {
-              handleErrorAdding(null, "fullname");
-            }}
-            onChangeText={(text) => handleInputChange(text, "fullname")}
-            errorMessage={errors.fullname}
-          />
-          <InputField
-            firstIconName="phone"
-            title="Phone"
-            placeholder="Enter your phone number"
-            keyboardType="numeric"
-            onFocus={() => {
-              handleErrorAdding(null, "phone");
-            }}
-            onChangeText={(text) => handleInputChange(text, "phone")}
-            errorMessage={errors.phone}
-          />
-          <InputField
-            firstIconName="lock-outline"
-            secondIconName="eye-off-outline"
-            secondIconNameAlt="eye-outline"
-            title="Password"
-            placeholder="Enter your password"
-            onFocus={() => {
-              handleErrorAdding(null, "password");
-            }}
-            onChangeText={(text) => handleInputChange(text, "password")}
-            errorMessage={errors.password}
-            password
-          />
-          <Button
-            text="Register"
-            onPress={() => {
-              Keyboard.dismiss();
-              validateEmail();
-              validateFullname();
-              validatePhone();
-              validatePassword();
-              attemptRegister();
-            }}
-          />
-          <Text
-            style={styles.loginText}
-            onPress={() => {
-              navigation.navigate("LoginScreen");
-            }}
-          >
-            Already have an account? Login
-          </Text>
-        </View>
-      </SafeAreaView>
+      <View style={styles.mainContainer}>
+        <Background>
+          <View style={styles.contentContainer}>
+            <Text style={styles.headerText}>Register</Text>
+            <Text style={styles.subtitleText}>
+              Input your data to register a new user
+            </Text>
+            <InputField
+              firstIconName="mail-outline"
+              title="Email"
+              placeholder="Enter your email address"
+              keyboardType="email-address"
+              onFocus={() => {
+                handleErrorAdding(null, "email");
+              }}
+              onChangeText={(text) => handleInputChange(text, "email")}
+              errorMessage={errors.email}
+            />
+            <InputField
+              firstIconName="person-outline"
+              title="Fullname"
+              placeholder="Enter you fullname"
+              onFocus={() => {
+                handleErrorAdding(null, "fullname");
+              }}
+              onChangeText={(text) => handleInputChange(text, "fullname")}
+              errorMessage={errors.fullname}
+            />
+            <InputField
+              firstIconName="phone"
+              title="Phone"
+              placeholder="Enter your phone number"
+              keyboardType="numeric"
+              onFocus={() => {
+                handleErrorAdding(null, "phone");
+              }}
+              onChangeText={(text) => handleInputChange(text, "phone")}
+              errorMessage={errors.phone}
+            />
+            <InputField
+              firstIconName="lock-outline"
+              secondIconName="eye-off-outline"
+              secondIconNameAlt="eye-outline"
+              title="Password"
+              placeholder="Enter your password"
+              onFocus={() => {
+                handleErrorAdding(null, "password");
+              }}
+              onChangeText={(text) => handleInputChange(text, "password")}
+              errorMessage={errors.password}
+              password
+            />
+            <View style={styles.buttonTextContainer}>
+              <Button
+                text="Register"
+                onPress={() => {
+                  Keyboard.dismiss();
+                  validateEmail();
+                  validateFullname();
+                  validatePhone();
+                  validatePassword();
+                  attemptRegister();
+                }}
+              />
+              <Text
+                style={styles.loginText}
+                onPress={() => {
+                  navigation.navigate("LoginScreen");
+                }}
+              >
+                Already have an account? Login
+              </Text>
+            </View>
+          </View>
+        </Background>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -176,27 +179,33 @@ export default RegisterScreen;
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: COLORS.white,
   },
   contentContainer: {
-    paddingTop: 50,
+    paddingTop: 100,
     paddingHorizontal: 25,
+    width: "100%",
   },
   headerText: {
     fontWeight: "700",
-    fontSize: 25,
-    color: COLORS.black,
+    fontSize: 30,
+    color: COLORS.white,
   },
   subtitleText: {
     fontWeight: "500",
-    fontSize: 14,
+    fontSize: 16,
     color: COLORS.grey,
     paddingTop: 10,
+    paddingBottom: 10,
   },
   loginText: {
     textAlign: "center",
-    fontSize: 16,
-    color: COLORS.black,
+    fontSize: 18,
+    color: COLORS.white,
     fontWeight: "600",
+    marginBottom: 15,
+  },
+  buttonTextContainer: {
+    backgroundColor: "'rgba(255, 255, 255, 0.3)'",
+    borderRadius: 10,
   },
 });
